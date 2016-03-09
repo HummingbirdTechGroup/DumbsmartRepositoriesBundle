@@ -12,6 +12,21 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        return new TreeBuilder();
+        $treeBuilder = new TreeBuilder();
+        $rootNode = $treeBuilder->root('dumbsmart_repositories');
+
+        $rootNode
+            ->children()
+                ->arrayNode('autoconfigure')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('orm')->defaultFalse()->end()
+                        ->booleanNode('odm')->defaultFalse()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+
+        return $rootNode;
     }
 }
