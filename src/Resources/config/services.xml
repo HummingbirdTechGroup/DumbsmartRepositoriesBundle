@@ -9,6 +9,7 @@
         <parameter key="dumbsmart_repositories.repository_manager.class">carlosV2\DumbsmartRepositories\RepositoryManager</parameter>
         <parameter key="dumbsmart_repositories.persister.class">carlosV2\DumbsmartRepositories\Persister</parameter>
         <parameter key="dumbsmart_repositories.transaction_factory.class">carlosV2\DumbsmartRepositories\TransactionFactory</parameter>
+        <parameter key="dumbsmart_repositories.configurer.class">carlosV2\DumbsmartRepositories\TransactionFactory</parameter>
     </parameters>
 
     <services>
@@ -17,7 +18,17 @@
         <service id="dumbsmart_repositories.repository_manager" class="%dumbsmart_repositories.repository_manager.class%" public="false" />
 
         <!-- services -->
-        <service id="dumbsmart_repositories.transaction_factory" class="%dumbsmart_repositories.transaction_factory.class%" public="false" />
-        <service id="dumbsmart_repositories.persister" class="%dumbsmart_repositories.persister.class%" />
+        <service id="dumbsmart_repositories.configurer" class="%dumbsmart_repositories.configurer.class%" public="false">
+            <argument type="service" id="dumbsmart_repositories.metadata_manager" />
+            <argument type="service" id="dumbsmart_repositories.repository_manager" />
+        </service>
+        <service id="dumbsmart_repositories.transaction_factory" class="%dumbsmart_repositories.transaction_factory.class%" public="false">
+            <argument type="service" id="dumbsmart_repositories.metadata_manager" />
+            <argument type="service" id="dumbsmart_repositories.repository_manager" />
+        </service>
+        <service id="dumbsmart_repositories.persister" class="%dumbsmart_repositories.persister.class%">
+            <argument type="service" id="dumbsmart_repositories.repository_manager" />
+            <argument type="service" id="dumbsmart_repositories.transaction_factory" />
+        </service>
     </services>
 </container>
