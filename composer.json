@@ -18,6 +18,7 @@
   },
   "require": {
     "php": "~5.4",
+    "doctrine/common": "~2.2",
     "symfony/framework-bundle": "~2.0",
     "everzet/persisted-objects": "~1.0",
     "carlosv2/dumbsmart-repositories": "dev-master"
