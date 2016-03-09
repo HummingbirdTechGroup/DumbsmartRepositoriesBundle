@@ -1,6 +1,6 @@
 <?php
 
-namespace carlosV2\DumbsmartRepositoriesBundle\DependecyInjection;
+namespace carlosV2\DumbsmartRepositoriesBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
