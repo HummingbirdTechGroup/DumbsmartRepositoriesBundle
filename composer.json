@@ -1,33 +1,34 @@
 {
-  "name": "carlosv2/dumbsmart-repositories-bundle",
-  "type": "library",
-  "description": "Bridge between Symfony and DumbsmartRepositories",
-  "keywords": ["Repository", "Filesystem", "Test", "Symfony", "Bundle"],
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Carlos Ortega",
-      "email": "carlosV2.0@gmail.com"
+    "name": "carlosv2/dumbsmart-repositories-bundle",
+    "type": "library",
+    "description": "Bridge between Symfony and DumbsmartRepositories",
+    "keywords": ["Repository", "Filesystem", "Test", "Symfony", "Bundle"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Carlos Ortega",
+            "email": "carlosV2.0@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "carlosV2\\DumbsmartRepositoriesBundle\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "spec\\carlosV2\\DumbsmartRepositoriesBundle\\": "spec/"
+        }
+    },
+    "require": {
+        "php": "~5.4",
+        "doctrine/common": "~2.2",
+        "symfony/framework-bundle": "~2.0",
+        "everzet/persisted-objects": "~1.0",
+        "carlosv2/dumbsmart-repositories": "dev-master"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.1.0@dev",
+        "bossa/phpspec2-expect": "*"
     }
-  ],
-  "autoload": {
-    "psr-4": {
-      "carlosV2\\DumbsmartRepositoriesBundle\\": "src/",
-      "spec\\carlosV2\\DumbsmartRepositoriesBundle\\": "spec/"
-    }
-  },
-  "require": {
-    "php": "~5.4",
-    "doctrine/common": "~2.2",
-    "symfony/framework-bundle": "~2.0",
-    "everzet/persisted-objects": "~1.0",
-    "carlosv2/dumbsmart-repositories": "dev-master"
-  },
-  "require-dev": {
-    "phpspec/phpspec": "~2.1.0@dev",
-    "bossa/phpspec2-expect": "*"
-  },
-  "config": {
-    "bin-dir": "bin"
-  }
 }
