@@ -6,13 +6,10 @@ use carlosV2\DumbsmartRepositories\Metadata;
 use carlosV2\DumbsmartRepositories\MetadataManager;
 use carlosV2\DumbsmartRepositories\Relation\OneToManyRelation;
 use carlosV2\DumbsmartRepositories\Relation\OneToOneRelation;
-use carlosV2\DumbsmartRepositories\RepositoryManager;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory;
-use Everzet\PersistedObjects\InMemoryRepository;
-use Everzet\PersistedObjects\ObjectIdentifier;
 
-class Configurer
+class MetadataConfigurer
 {
     const ORM_TO_ONE_BITMASK = 3;
     const ORM_TO_MANY_BITMASK = 12;
@@ -22,54 +19,34 @@ class Configurer
     /**
      * @var MetadataManager
      */
-    private $metadataManager;
+    private $manager;
 
     /**
-     * @var RepositoryManager
+     * @param MetadataManager $manager
      */
-    private $repositoryManager;
-
-    /**
-     * @param MetadataManager      $metadataManager
-     * @param RepositoryManager    $repositoryManager
-     */
-    public function __construct(
-        MetadataManager $metadataManager,
-        RepositoryManager $repositoryManager
-    ) {
-        $this->metadataManager = $metadataManager;
-        $this->repositoryManager = $repositoryManager;
+    public function __construct(MetadataManager $manager)
+    {
+        $this->manager = $manager;
     }
 
     /**
-     * @param ClassMetadataFactory $metadataFactory
+     * @param ClassMetadataFactory $factory
      */
-    public function configure(ClassMetadataFactory $metadataFactory)
+    public function configureMetadata(ClassMetadataFactory $factory)
     {
-        foreach ($metadataFactory->getAllMetadata() as $doctrineMetadata) {
-            $identifier = new DoctrineObjectIdentifier($doctrineMetadata);
-
-            $this->metadataManager->addMetadata(
-                $doctrineMetadata->getName(),
-                $this->createMetadata($doctrineMetadata, $identifier)
-            );
-
-            $this->repositoryManager->addRepository(
-                $doctrineMetadata->getName(),
-                $this->createRepository($identifier)
-            );
+        foreach ($factory->getAllMetadata() as $metadata) {
+            $this->manager->addMetadata($metadata->getName(), $this->createMetadata($metadata));
         }
     }
 
     /**
-     * @param ClassMetadata    $doctrineMetadata
-     * @param ObjectIdentifier $identifier
+     * @param ClassMetadata $doctrineMetadata
      *
      * @return Metadata
      */
-    private function createMetadata(ClassMetadata $doctrineMetadata, ObjectIdentifier $identifier)
+    private function createMetadata(ClassMetadata $doctrineMetadata)
     {
-        $metadata = new Metadata($identifier);
+        $metadata = new Metadata($this->createObjectIdentifier($doctrineMetadata));
 
         foreach ($doctrineMetadata->associationMappings as $association) {
             if ($this->isToOneRelation($association)) {
@@ -92,7 +69,7 @@ class Configurer
         if ($this->isOrmRelation($association)) {
             return ($association['type'] & self::ORM_TO_ONE_BITMASK) === $association['type'];
         } elseif ($this->isOdmRelation($association)) {
-            return !$association['embedded'] && $association['type'] === self::ODM_TO_ONE_VALUE;
+            return $association['related'] && $association['type'] === self::ODM_TO_ONE_VALUE;
         }
 
         return false;
@@ -108,7 +85,7 @@ class Configurer
         if ($this->isOrmRelation($association)) {
             return ($association['type'] & self::ORM_TO_MANY_BITMASK) === $association['type'];
         } elseif ($this->isOdmRelation($association)) {
-            return !$association['embedded'] && $association['type'] === self::ODM_TO_MANY_VALUE;
+            return $association['related'] && $association['type'] === self::ODM_TO_MANY_VALUE;
         }
 
         return false;
@@ -136,21 +113,21 @@ class Configurer
     private function isOdmRelation(array $association)
     {
         return array_key_exists('type', $association) &&
-               array_key_exists('embedded', $association) &&
+               array_key_exists('related', $association) &&
                array_key_exists('fieldName', $association) &&
                is_string($association['type']) &&
-               is_bool($association['embedded']) &&
+               is_bool($association['related']) &&
                is_string($association['fieldName'])
         ;
     }
 
     /**
-     * @param ObjectIdentifier $identifier
+     * @param ClassMetadata $metadata
      *
-     * @return InMemoryRepository
+     * @return DoctrineObjectIdentifier
      */
-    private function createRepository(ObjectIdentifier $identifier)
+    private function createObjectIdentifier(ClassMetadata $metadata)
     {
-        return new InMemoryRepository($identifier);
+        return new DoctrineObjectIdentifier($metadata);
     }
 }
