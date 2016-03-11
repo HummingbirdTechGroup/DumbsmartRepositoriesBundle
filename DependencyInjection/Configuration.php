@@ -18,15 +18,14 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('autoconfigure')
-                    ->addDefaultsIfNotSet()
                     ->children()
-                        ->booleanNode('orm')->defaultFalse()->end()
-                        ->booleanNode('odm')->defaultFalse()->end()
+                        ->booleanNode('orm')->end()
+                        ->booleanNode('odm')->end()
                     ->end()
                 ->end()
             ->end()
         ;
 
-        return $rootNode;
+        return $treeBuilder;
     }
 }
