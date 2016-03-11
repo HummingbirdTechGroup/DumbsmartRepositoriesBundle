@@ -11,20 +11,21 @@ class DumbsmartRepositoriesBundle extends Bundle
      */
     public function boot()
     {
-        $configurer = $this->container->get('dumbsmart_repositories.configurer');
+        $metadataConfigurer = $this->container->get('dumbsmart_repositories.metadata_configurer');
+        $repositoryConfigurer = $this->container->get('dumbsmart_repositories.repository_configurer');
 
         if ($this->container->getParameter('dumbsmart_repositories.config.autoload.orm')) {
-            if ($this->container->has('doctrine.orm.entity_manager')) {
-                $entityManager = $this->container->get('doctrine.orm.entity_manager');
-                $configurer->configure($entityManager->getMetadataFactory());
-            }
+            $entityManager = $this->container->get('doctrine.orm.entity_manager');
+
+            $metadataConfigurer->configureMetadata($entityManager->getMetadataFactory());
+            $repositoryConfigurer->configureRepositories($entityManager->getMetadataFactory());
         }
 
         if ($this->container->getParameter('dumbsmart_repositories.config.autoload.odm')) {
-            if ($this->container->has('doctrine_mongodb.odm.document_manager')) {
-                $entityManager = $this->container->get('doctrine_mongodb.odm.document_manager');
-                $configurer->configure($entityManager->getMetadataFactory());
-            }
+            $documentManager = $this->container->get('doctrine_mongodb.odm.document_manager');
+
+            $metadataConfigurer->configureMetadata($documentManager->getMetadataFactory());
+            $repositoryConfigurer->configureRepositories($documentManager->getMetadataFactory());
         }
     }
 }
