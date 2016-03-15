@@ -33,6 +33,16 @@
         </service>
         <service id="dumbsmart_repositories.repository_configurer" class="%dumbsmart_repositories.repository_configurer.class%">
             <argument type="service" id="dumbsmart_repositories.repository_manager" />
+            <argument>%dumbsmart_repositories.config.repositories.type%</argument>
+        </service>
+        
+        <!-- RepositoryFactories -->
+        <service id="dumbsmart_repositories.in_memory.repository_factory" class="carlosV2\DumbsmartRepositoriesBundle\RepositoryFactories\InMemoryRepositoryFactory">
+            <tag name="dumbsmart_repositories.repository_factory" />
+        </service>
+        <service id="dumbsmart_repositories.file.repository_factory" class="carlosV2\DumbsmartRepositoriesBundle\RepositoryFactories\FileRepositoryFactory">
+            <argument>%dumbsmart_repositories.config.repositories.path%</argument>
+            <tag name="dumbsmart_repositories.repository_factory" />
         </service>
     </services>
 </container>

@@ -2,6 +2,8 @@
 
 namespace carlosV2\DumbsmartRepositoriesBundle;
 
+use carlosV2\DumbsmartRepositoriesBundle\DependencyInjection\CompilerPass\RepositoryFactoryCompilerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class DumbsmartRepositoriesBundle extends Bundle
@@ -27,5 +29,14 @@ class DumbsmartRepositoriesBundle extends Bundle
             $metadataConfigurer->configureMetadata($documentManager->getMetadataFactory());
             $repositoryConfigurer->configureRepositories($documentManager->getMetadataFactory());
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+        $container->addCompilerPass(new RepositoryFactoryCompilerPass());
     }
 }
