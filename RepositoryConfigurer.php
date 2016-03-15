@@ -3,22 +3,19 @@
 namespace carlosV2\DumbsmartRepositoriesBundle;
 
 use carlosV2\DumbsmartRepositories\RepositoryManager;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory;
-use Doctrine\Instantiator\Exception\InvalidArgumentException;
-use Everzet\PersistedObjects\FileRepository;
-use Everzet\PersistedObjects\InMemoryRepository;
-use Everzet\PersistedObjects\Repository;
 
 class RepositoryConfigurer
 {
-    const TYPE_IN_MEMORY = 'in_memory';
-    const TYPE_FILE = 'file';
-
     /**
      * @var RepositoryManager
      */
     private $manager;
+
+    /**
+     * @var RepositoryFactory[]
+     */
+    private $factories;
 
     /**
      * @var string
@@ -26,20 +23,22 @@ class RepositoryConfigurer
     private $type;
 
     /**
-     * @var string|null
-     */
-    private $path;
-
-    /**
      * @param RepositoryManager $manager
      * @param string            $type
-     * @param string|null       $path
      */
-    public function __construct(RepositoryManager $manager, $type, $path = null)
+    public function __construct(RepositoryManager $manager, $type)
     {
         $this->manager = $manager;
         $this->type = $type;
-        $this->path = $path;
+        $this->factories = [];
+    }
+
+    /**
+     * @param RepositoryFactory $factory
+     */
+    public function addRepositoryFactory(RepositoryFactory $factory)
+    {
+        $this->factories[] = $factory;
     }
 
     /**
@@ -48,63 +47,24 @@ class RepositoryConfigurer
     public function configureRepositories(ClassMetadataFactory $factory)
     {
         foreach ($factory->getAllMetadata() as $metadata) {
-            $this->manager->addRepository($metadata->getName(), $this->createRepository($metadata));
+            $this->manager->addRepository(
+                $metadata->getName(),
+                $this->getRepositoryFactory()->createRepository($metadata)
+            );
         }
     }
 
     /**
-     * @param ClassMetadata $metadata
-     *
-     * @return Repository
-     *
-     * @throws InvalidArgumentException
+     * @return RepositoryFactory
      */
-    private function createRepository(ClassMetadata $metadata)
+    private function getRepositoryFactory()
     {
-        switch ($this->type) {
-            case self::TYPE_IN_MEMORY:
-                return $this->createInMemoryRepository($metadata);
-                break;
-
-            case self::TYPE_FILE:
-                return $this->createFileRepository($metadata, $this->path);
-                break;
-
-            default:
-                throw new InvalidArgumentException();
+        foreach ($this->factories as $factory) {
+            if ($factory->supports($this->type)) {
+                return $factory;
+            }
         }
-    }
 
-    /**
-     * @param ClassMetadata $metadata
-     *
-     * @return InMemoryRepository
-     */
-    private function createInMemoryRepository(ClassMetadata $metadata)
-    {
-        return new InMemoryRepository($this->createObjectIdentifier($metadata));
-    }
-
-    /**
-     * @param ClassMetadata $metadata
-     * @param string        $path
-     *
-     * @return FileRepository
-     */
-    private function createFileRepository(ClassMetadata $metadata, $path)
-    {
-        $filename = rtrim($path, '/') . '/' . md5($metadata->getName());
-
-        return new FileRepository($filename, $this->createObjectIdentifier($metadata));
-    }
-
-    /**
-     * @param ClassMetadata $metadata
-     *
-     * @return DoctrineObjectIdentifier
-     */
-    private function createObjectIdentifier(ClassMetadata $metadata)
-    {
-        return new DoctrineObjectIdentifier($metadata);
+        throw new \InvalidArgumentException('RepositoryFactory not found for type `' . $this->type .'`.');
     }
 }
