@@ -7,13 +7,28 @@ use PhpSpec\ObjectBehavior;
 
 class DoctrineObjectIdentifierSpec extends ObjectBehavior
 {
-    function it_computes_the_id_of_an_object(ClassMetadata $metadata)
+    function let(ClassMetadata $metadata)
+    {
+        $this->beConstructedWith($metadata);
+    }
+
+    function it_computes_the_single_id_of_an_object(ClassMetadata $metadata)
     {
         $object = new \stdClass();
 
-        $metadata->getIdentifierValues($object)->willReturn('id');
+        $metadata->getIdentifier()->willReturn(['field']);
+        $metadata->getIdentifierValues($object)->willReturn(['field1' => 'value']);
 
-        $this->beConstructedWith($metadata);
-        $this->getIdentity($object)->shouldReturn('id');
+        $this->getIdentity($object)->shouldReturn('value');
+    }
+
+    function it_computes_the_composed_id_of_an_object(ClassMetadata $metadata)
+    {
+        $object = new \stdClass();
+
+        $metadata->getIdentifier()->willReturn(['field1', 'field2']);
+        $metadata->getIdentifierValues($object)->willReturn(['field1' => 'value1', 'field2' => 'value2']);
+
+        $this->getIdentity($object)->shouldReturn(['field1' => 'value1', 'field2' => 'value2']);
     }
 }
