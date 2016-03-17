@@ -2,7 +2,6 @@
 
 namespace carlosV2\DumbsmartRepositoriesBundle\DependencyInjection;
 
-use carlosV2\DumbsmartRepositoriesBundle\RepositoryConfigurer;
 use carlosV2\DumbsmartRepositoriesBundle\RepositoryFactories\InMemoryRepositoryFactory;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -51,6 +50,9 @@ class Configuration implements ConfigurationInterface
                             ->defaultFalse()
                         ->end()
                     ->end()
+                ->end()
+                ->arrayNode('aliases')
+                    ->prototype('scalar')->end()
                 ->end()
             ->end()
         ;
