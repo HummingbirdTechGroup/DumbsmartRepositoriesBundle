@@ -5,6 +5,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="dumbsmart_repositories.alias_manager.class">carlosV2\DumbsmartRepositories\AliasManager</parameter>
         <parameter key="dumbsmart_repositories.metadata_manager.class">carlosV2\DumbsmartRepositories\MetadataManager</parameter>
         <parameter key="dumbsmart_repositories.repository_manager.class">carlosV2\DumbsmartRepositories\RepositoryManager</parameter>
         <parameter key="dumbsmart_repositories.persister.class">carlosV2\DumbsmartRepositories\Persister</parameter>
@@ -15,8 +16,13 @@
     </parameters>
 
     <services>
-        <service id="dumbsmart_repositories.metadata_manager" class="%dumbsmart_repositories.metadata_manager.class%" public="false" />
-        <service id="dumbsmart_repositories.repository_manager" class="%dumbsmart_repositories.repository_manager.class%" public="false" />
+        <service id="dumbsmart_repositories.alias_manager" class="%dumbsmart_repositories.alias_manager.class%" public="false" />
+        <service id="dumbsmart_repositories.metadata_manager" class="%dumbsmart_repositories.metadata_manager.class%" public="false">
+            <argument type="service" id="dumbsmart_repositories.alias_manager" />
+        </service>
+        <service id="dumbsmart_repositories.repository_manager" class="%dumbsmart_repositories.repository_manager.class%" public="false">
+            <argument type="service" id="dumbsmart_repositories.alias_manager" />
+        </service>
         <service id="dumbsmart_repositories.transaction_factory" class="%dumbsmart_repositories.transaction_factory.class%" public="false">
             <argument type="service" id="dumbsmart_repositories.metadata_manager" />
             <argument type="service" id="dumbsmart_repositories.repository_manager" />
