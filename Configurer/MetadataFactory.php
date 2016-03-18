@@ -46,7 +46,7 @@ class MetadataFactory
         if ($this->isOrmRelation($association)) {
             return ($association['type'] & self::ORM_TO_ONE_BITMASK) === $association['type'];
         } elseif ($this->isOdmRelation($association)) {
-            return $association['related'] && $association['type'] === self::ODM_TO_ONE_VALUE;
+            return $association['reference'] && $association['type'] === self::ODM_TO_ONE_VALUE;
         }
 
         return false;
@@ -62,7 +62,7 @@ class MetadataFactory
         if ($this->isOrmRelation($association)) {
             return ($association['type'] & self::ORM_TO_MANY_BITMASK) === $association['type'];
         } elseif ($this->isOdmRelation($association)) {
-            return $association['related'] && $association['type'] === self::ODM_TO_MANY_VALUE;
+            return $association['reference'] && $association['type'] === self::ODM_TO_MANY_VALUE;
         }
 
         return false;
@@ -90,10 +90,10 @@ class MetadataFactory
     private function isOdmRelation(array $association)
     {
         return array_key_exists('type', $association) &&
-               array_key_exists('related', $association) &&
+               array_key_exists('reference', $association) &&
                array_key_exists('fieldName', $association) &&
                is_string($association['type']) &&
-               is_bool($association['related']) &&
+               is_bool($association['reference']) &&
                is_string($association['fieldName'])
         ;
     }

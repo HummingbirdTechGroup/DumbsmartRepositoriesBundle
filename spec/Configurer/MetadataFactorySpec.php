@@ -31,8 +31,8 @@ class MetadataFactorySpec extends ObjectBehavior
         ClassMetadata $classMetadata
     ) {
         $classMetadata->associationMappings = [
-            'toOneField' => ['related' => true, 'type' => 'one', 'fieldName' => 'toOneField'],
-            'toManyField' => ['related' => true, 'type' => 'many', 'fieldName' => 'toManyField']
+            'toOneField' => ['reference' => true, 'type' => 'one', 'fieldName' => 'toOneField'],
+            'toManyField' => ['reference' => true, 'type' => 'many', 'fieldName' => 'toManyField']
         ];
 
         $this->createMetadata($classMetadata, $identifier)->shouldReturnMetadataWith($identifier, [
@@ -46,8 +46,8 @@ class MetadataFactorySpec extends ObjectBehavior
         ClassMetadata $classMetadata
     ) {
         $classMetadata->associationMappings = [
-            'toOneField' => ['related' => false, 'type' => 'one', 'fieldName' => 'toOneField'],
-            'toManyField' => ['related' => true, 'type' => 'many', 'fieldName' => 'toManyField']
+            'toOneField' => ['reference' => false, 'type' => 'one', 'fieldName' => 'toOneField'],
+            'toManyField' => ['reference' => true, 'type' => 'many', 'fieldName' => 'toManyField']
         ];
 
         $this->createMetadata($classMetadata, $identifier)->shouldReturnMetadataWith($identifier, [
@@ -74,12 +74,12 @@ class MetadataFactorySpec extends ObjectBehavior
             'ormFieldWithWrongType' => ['type' => '4', 'fieldName' => 'toOneField'],
             'ormFieldWithWrongFieldName' => ['type' => 4, 'fieldName' => 1],
 
-            'odmFieldWithoutType' => ['related' => false, 'fieldName' => 'toOneField'],
-            'odmFieldWithoutRelated' => ['type' => 'one', 'fieldName' => 'toOneField'],
-            'odmFieldWithoutFieldName' => ['related' => false, 'type' => 'one'],
-            'odmFieldWithWrongType' => ['related' => false, 'type' => '1', 'fieldName' => 'toOneField'],
-            'odmFieldWithWrongRelated' => ['related' => 'false', 'type' => 'one', 'fieldName' => 'toOneField'],
-            'odmFieldWitWrongFieldName' => ['related' => false, 'type' => 'one', 'fieldName' => 1]
+            'odmFieldWithoutType' => ['reference' => false, 'fieldName' => 'toOneField'],
+            'odmFieldWithoutreference' => ['type' => 'one', 'fieldName' => 'toOneField'],
+            'odmFieldWithoutFieldName' => ['reference' => false, 'type' => 'one'],
+            'odmFieldWithWrongType' => ['reference' => false, 'type' => '1', 'fieldName' => 'toOneField'],
+            'odmFieldWithWrongreference' => ['reference' => 'false', 'type' => 'one', 'fieldName' => 'toOneField'],
+            'odmFieldWitWrongFieldName' => ['reference' => false, 'type' => 'one', 'fieldName' => 1]
         ];
 
         $this->createMetadata($classMetadata, $identifier)->shouldReturnMetadataWith($identifier, []);
