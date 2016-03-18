@@ -24,10 +24,6 @@ class DumbsmartRepositoriesExtension extends Extension
         $container->setParameter('dumbsmart_repositories.config.autoload.odm', $config['autoconfigure']['odm']);
         $container->setParameter('dumbsmart_repositories.config.repositories.type', $config['repositories']['type']);
         $container->setParameter('dumbsmart_repositories.config.repositories.path', $config['repositories']['path']);
-
-        $aliasManagerDefinition = $container->getDefinition('dumbsmart_repositories.alias_manager');
-        foreach ($config['aliases'] as $alias => $className) {
-            $aliasManagerDefinition->addMethodCall('addAlias', [$alias, $className]);
-        }
+        $container->setParameter('dumbsmart_repositories.config.aliases', $config['aliases']);
     }
 }

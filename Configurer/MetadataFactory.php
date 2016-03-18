@@ -1,15 +1,14 @@
 <?php
 
-namespace carlosV2\DumbsmartRepositoriesBundle;
+namespace carlosV2\DumbsmartRepositoriesBundle\Configurer;
 
 use carlosV2\DumbsmartRepositories\Metadata;
-use carlosV2\DumbsmartRepositories\MetadataManager;
 use carlosV2\DumbsmartRepositories\Relation\OneToManyRelation;
 use carlosV2\DumbsmartRepositories\Relation\OneToOneRelation;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory;
+use Everzet\PersistedObjects\ObjectIdentifier;
 
-class MetadataConfigurer
+class MetadataFactory
 {
     const ORM_TO_ONE_BITMASK = 3;
     const ORM_TO_MANY_BITMASK = 12;
@@ -17,36 +16,14 @@ class MetadataConfigurer
     const ODM_TO_MANY_VALUE = 'many';
 
     /**
-     * @var MetadataManager
-     */
-    private $manager;
-
-    /**
-     * @param MetadataManager $manager
-     */
-    public function __construct(MetadataManager $manager)
-    {
-        $this->manager = $manager;
-    }
-
-    /**
-     * @param ClassMetadataFactory $factory
-     */
-    public function configureMetadata(ClassMetadataFactory $factory)
-    {
-        foreach ($factory->getAllMetadata() as $metadata) {
-            $this->manager->addMetadata($metadata->getName(), $this->createMetadata($metadata));
-        }
-    }
-
-    /**
-     * @param ClassMetadata $doctrineMetadata
+     * @param ClassMetadata    $doctrineMetadata
+     * @param ObjectIdentifier $identifier
      *
      * @return Metadata
      */
-    private function createMetadata(ClassMetadata $doctrineMetadata)
+    public function createMetadata(ClassMetadata $doctrineMetadata, ObjectIdentifier $identifier)
     {
-        $metadata = new Metadata($this->createObjectIdentifier($doctrineMetadata));
+        $metadata = new Metadata($identifier);
 
         foreach ($doctrineMetadata->associationMappings as $association) {
             if ($this->isToOneRelation($association)) {
@@ -119,15 +96,5 @@ class MetadataConfigurer
                is_bool($association['related']) &&
                is_string($association['fieldName'])
         ;
-    }
-
-    /**
-     * @param ClassMetadata $metadata
-     *
-     * @return DoctrineObjectIdentifier
-     */
-    private function createObjectIdentifier(ClassMetadata $metadata)
-    {
-        return new DoctrineObjectIdentifier($metadata);
     }
 }
