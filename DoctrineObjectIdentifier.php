@@ -26,7 +26,7 @@ class DoctrineObjectIdentifier implements ObjectIdentifier
     public function getIdentity($object)
     {
         $id = $this->metadata->getIdentifierValues($object);
-        if (count($this->metadata->getIdentifier()) === 1) {
+        if (count($id) === 1) {
             $id = reset($id);
         }
 

@@ -68,7 +68,10 @@ class Configurer
         foreach ($factory->getAllMetadata() as $metadata) {
             $className = $metadata->getName();
             $parentClassName = $this->getParentClassName($metadata);
-            $identifier = $this->oif->createObjectIdentifier($metadata);
+            $identifier = new AliasedObjectIdentifier(
+                $className,
+                $this->oif->createObjectIdentifier($metadata)
+            );
 
             try {
                 $this->mm->getMetadataForClassName($className);
@@ -104,6 +107,8 @@ class Configurer
     public function configureAliases(array $aliases)
     {
         foreach ($aliases as $alias => $className) {
+            $this->mm->getMetadataForClassName($className)->getObjectIdentifier()->setAlias($alias);
+
             $this->mm->addMetadata($alias, $this->mm->getMetadataForClassName($className));
             $this->rm->addRepository($alias, $this->rm->getRepositoryForClassName($className));
         }

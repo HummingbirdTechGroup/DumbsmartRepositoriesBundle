@@ -7,6 +7,7 @@ use carlosV2\DumbsmartRepositories\Exception\RepositoryNotFoundException;
 use carlosV2\DumbsmartRepositories\Metadata;
 use carlosV2\DumbsmartRepositories\MetadataManager;
 use carlosV2\DumbsmartRepositories\RepositoryManager;
+use carlosV2\DumbsmartRepositoriesBundle\AliasedObjectIdentifier;
 use carlosV2\DumbsmartRepositoriesBundle\Configurer\MetadataFactory;
 use carlosV2\DumbsmartRepositoriesBundle\Configurer\ObjectIdentifierFactory;
 use carlosV2\DumbsmartRepositoriesBundle\Configurer\RepositoryFactory;
@@ -15,6 +16,7 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory;
 use Everzet\PersistedObjects\ObjectIdentifier;
 use Everzet\PersistedObjects\Repository;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class ConfigurerSpec extends ObjectBehavior
 {
@@ -43,8 +45,8 @@ class ConfigurerSpec extends ObjectBehavior
         $mm->getMetadataForClassName('my_class')->willThrow(MetadataNotFoundException::class);
         $rm->getRepositoryForClassName('my_class')->willThrow(RepositoryNotFoundException::class);
         $oif->createObjectIdentifier($classMetadata)->willReturn($identifier);
-        $mf->createMetadata($classMetadata, $identifier)->willReturn($metadata);
-        $rf->createRepository($classMetadata, $identifier)->willReturn($repository);
+        $mf->createMetadata($classMetadata, Argument::type(AliasedObjectIdentifier::class))->willReturn($metadata);
+        $rf->createRepository($classMetadata, Argument::type(AliasedObjectIdentifier::class))->willReturn($repository);
 
         $factory->getAllMetadata()->willReturn([$classMetadata]);
         $classMetadata->getName()->willReturn('my_class');
@@ -71,8 +73,8 @@ class ConfigurerSpec extends ObjectBehavior
         $mm->getMetadataForClassName('my_class')->willReturn($metadata);
         $rm->getRepositoryForClassName('my_class')->willReturn($repository);
         $oif->createObjectIdentifier($classMetadata)->willReturn($identifier);
-        $mf->createMetadata($classMetadata, $identifier)->shouldNotBeCalled();
-        $rf->createRepository($classMetadata, $identifier)->shouldNotBeCalled();
+        $mf->createMetadata($classMetadata, Argument::type(AliasedObjectIdentifier::class))->shouldNotBeCalled();
+        $rf->createRepository($classMetadata, Argument::type(AliasedObjectIdentifier::class))->shouldNotBeCalled();
 
         $factory->getAllMetadata()->willReturn([$classMetadata]);
         $classMetadata->getName()->willReturn('my_class');
@@ -101,8 +103,8 @@ class ConfigurerSpec extends ObjectBehavior
         $rm->getRepositoryForClassName('my_class')->willThrow(RepositoryNotFoundException::class);
         $rm->getRepositoryForClassName('my_parent_class')->willThrow(RepositoryNotFoundException::class);
         $oif->createObjectIdentifier($classMetadata)->willReturn($identifier);
-        $mf->createMetadata($classMetadata, $identifier)->willReturn($metadata);
-        $rf->createRepository($parentClassMetadata, $identifier)->willReturn($repository);
+        $mf->createMetadata($classMetadata, Argument::type(AliasedObjectIdentifier::class))->willReturn($metadata);
+        $rf->createRepository($parentClassMetadata, Argument::type(AliasedObjectIdentifier::class))->willReturn($repository);
 
         $factory->getAllMetadata()->willReturn([$classMetadata]);
         $factory->getMetadataFor('my_parent_class')->willReturn($parentClassMetadata);
@@ -121,8 +123,12 @@ class ConfigurerSpec extends ObjectBehavior
         MetadataManager $mm,
         Metadata $metadata,
         RepositoryManager $rm,
-        Repository $repository
+        Repository $repository,
+        AliasedObjectIdentifier $identifier
     ) {
+        $metadata->getObjectIdentifier()->willReturn($identifier);
+        $identifier->setAlias('my_alias')->shouldBeCalled();
+
         $mm->getMetadataForClassName('my_class')->willReturn($metadata);
         $mm->addMetadata('my_alias', $metadata)->shouldBeCalled();
 
