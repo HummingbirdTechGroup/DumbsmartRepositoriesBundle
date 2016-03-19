@@ -30,5 +30,18 @@
         <service id="dumbsmart_repositories.front_repository_factory" class="%dumbsmart_repositories.front_repository_factory.class%">
             <argument type="service" id="dumbsmart_repositories.persister" />
         </service>
+        <service id="dumbsmart_repositories.object_identifier_factory" class="%dumbsmart_repositories.object_identifier_factory.class%" public="false" />
+        <service id="dumbsmart_repositories.metadata_factory" class="%dumbsmart_repositories.metadata_factory.class%" public="false" />
+        <service id="dumbsmart_repositories.repository_factory" class="%dumbsmart_repositories.repository_factory.class%" public="false">
+            <argument>%dumbsmart_repositories.config.repositories.type%</argument>
+            <argument>%dumbsmart_repositories.config.repositories.path%</argument>
+        </service>
+        <service id="dumbsmart_repositories.configurer" class="%dumbsmart_repositories.configurer.class%">
+            <argument type="service" id="dumbsmart_repositories.metadata_manager" />
+            <argument type="service" id="dumbsmart_repositories.repository_manager" />
+            <argument type="service" id="dumbsmart_repositories.object_identifier_factory" />
+            <argument type="service" id="dumbsmart_repositories.metadata_factory" />
+            <argument type="service" id="dumbsmart_repositories.repository_factory" />
+        </service>
     </services>
 </container>
