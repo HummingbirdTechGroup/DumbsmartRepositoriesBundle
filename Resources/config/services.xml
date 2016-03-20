@@ -14,6 +14,7 @@
         <parameter key="dumbsmart_repositories.object_identifier_factory.class">carlosV2\DumbsmartRepositoriesBundle\Configurer\ObjectIdentifierFactory</parameter>
         <parameter key="dumbsmart_repositories.metadata_factory.class">carlosV2\DumbsmartRepositoriesBundle\Configurer\MetadataFactory</parameter>
         <parameter key="dumbsmart_repositories.repository_factory.class">carlosV2\DumbsmartRepositoriesBundle\Configurer\RepositoryFactory</parameter>
+        <parameter key="dumbsmart_repositories.aliased_metadata_factory.class">carlosV2\DumbsmartRepositoriesBundle\Configurer\AliasedMetadataFactory</parameter>
     </parameters>
 
     <services>
@@ -36,12 +37,16 @@
             <argument>%dumbsmart_repositories.config.repositories.type%</argument>
             <argument>%dumbsmart_repositories.config.repositories.path%</argument>
         </service>
+        <service id="dumbsmart_repositories.aliased_metadata_factory" class="%dumbsmart_repositories.aliased_metadata_factory.class%" public="false">
+            <argument type="service" id="dumbsmart_repositories.metadata_manager" />
+        </service>
         <service id="dumbsmart_repositories.configurer" class="%dumbsmart_repositories.configurer.class%">
             <argument type="service" id="dumbsmart_repositories.metadata_manager" />
             <argument type="service" id="dumbsmart_repositories.repository_manager" />
             <argument type="service" id="dumbsmart_repositories.object_identifier_factory" />
             <argument type="service" id="dumbsmart_repositories.metadata_factory" />
             <argument type="service" id="dumbsmart_repositories.repository_factory" />
+            <argument type="service" id="dumbsmart_repositories.aliased_metadata_factory" />
         </service>
     </services>
 </container>
