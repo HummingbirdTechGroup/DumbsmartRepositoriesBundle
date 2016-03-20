@@ -46,7 +46,7 @@ class AliasedObjectIdentifier implements ObjectIdentifier
     public function getIdentity($object)
     {
         if (in_array(get_class($object), $this->aliases)) {
-            $object = $this->performNastyCasting($object);
+            return $this->getIdentityForAliasedObject($object);
         }
 
         return $this->identifier->getIdentity($object);
@@ -55,17 +55,28 @@ class AliasedObjectIdentifier implements ObjectIdentifier
     /**
      * @param object $object
      *
-     * @return object
+     * @return mixed
      */
-    private function performNastyCasting($object)
+    private function getIdentityForAliasedObject($object)
     {
-        $newObject = (new \ReflectionClass($this->className))->newInstanceWithoutConstructor();
+        $originalObject = (new \ReflectionClass($this->className))->newInstanceWithoutConstructor();
+        
+        $this->copyFields($object, $originalObject);
+        $id =$this->identifier->getIdentity($originalObject);
+        $this->copyFields($originalObject, $object);
 
-        foreach ($this->getProperties($object) as $field => $value) {
-            $this->setFieldValue($newObject, $field, $value);
+        return $id;
+    }
+
+    /**
+     * @param object $from
+     * @param object $to
+     */
+    private function copyFields($from, $to)
+    {
+        foreach ($this->getProperties($from) as $field => $value) {
+            $this->setFieldValue($to, $field, $value);
         }
-
-        return $newObject;
     }
 
     /**
