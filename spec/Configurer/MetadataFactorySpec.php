@@ -93,15 +93,11 @@ class MetadataFactorySpec extends ObjectBehavior
                     return false;
                 }
 
-                $property = new \ReflectionProperty($metadata, 'identifier');
-                $property->setAccessible(true);
-                if ($property->getValue($metadata) !== $identifier) {
+                if ($metadata->getObjectIdentifier() !== $identifier) {
                     return false;
                 }
 
-                $property = new \ReflectionProperty($metadata, 'relations');
-                $property->setAccessible(true);
-                return $property->getValue($metadata) == $relations;
+                return $metadata->getRelations() == $relations;
             }
         ];
     }
