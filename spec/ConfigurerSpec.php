@@ -8,6 +8,7 @@ use carlosV2\DumbsmartRepositories\Metadata;
 use carlosV2\DumbsmartRepositories\MetadataManager;
 use carlosV2\DumbsmartRepositories\RepositoryManager;
 use carlosV2\DumbsmartRepositoriesBundle\AliasedObjectIdentifier;
+use carlosV2\DumbsmartRepositoriesBundle\Configurer\AliasedMetadataFactory;
 use carlosV2\DumbsmartRepositoriesBundle\Configurer\MetadataFactory;
 use carlosV2\DumbsmartRepositoriesBundle\Configurer\ObjectIdentifierFactory;
 use carlosV2\DumbsmartRepositoriesBundle\Configurer\RepositoryFactory;
@@ -25,9 +26,10 @@ class ConfigurerSpec extends ObjectBehavior
         RepositoryManager $rm,
         ObjectIdentifierFactory $oif,
         MetadataFactory $mf,
-        RepositoryFactory $rf
+        RepositoryFactory $rf,
+        AliasedMetadataFactory $amf
     ) {
-        $this->beConstructedWith($mm, $rm, $oif, $mf, $rf);
+        $this->beConstructedWith($mm, $rm, $oif, $mf, $rf, $amf);
     }
 
     function it_configures_new_entities_without_inheritance(
@@ -122,19 +124,23 @@ class ConfigurerSpec extends ObjectBehavior
     function it_reuses_configuration_for_the_aliases(
         MetadataManager $mm,
         Metadata $metadata,
+        Metadata $aliasedMetadata,
         RepositoryManager $rm,
         Repository $repository,
-        AliasedObjectIdentifier $identifier
+        AliasedObjectIdentifier $identifier,
+        AliasedMetadataFactory $amf
     ) {
+        $amf->createAliasedMetadata(['class' => 'my_class', 'fields' => []])->willReturn($aliasedMetadata);
+
         $metadata->getObjectIdentifier()->willReturn($identifier);
         $identifier->setAlias('my_alias')->shouldBeCalled();
 
         $mm->getMetadataForClassName('my_class')->willReturn($metadata);
-        $mm->addMetadata('my_alias', $metadata)->shouldBeCalled();
+        $mm->addMetadata('my_alias', $aliasedMetadata)->shouldBeCalled();
 
         $rm->getRepositoryForClassName('my_class')->willReturn($repository);
         $rm->addRepository('my_alias', $repository)->shouldBeCalled();
 
-        $this->configureAliases(['my_alias' => 'my_class']);
+        $this->configureAliases(['my_alias' => ['class' => 'my_class', 'fields' => []]]);
     }
 }

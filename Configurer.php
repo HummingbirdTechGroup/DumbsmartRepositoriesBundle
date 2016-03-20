@@ -6,6 +6,7 @@ use carlosV2\DumbsmartRepositories\Exception\MetadataNotFoundException;
 use carlosV2\DumbsmartRepositories\Exception\RepositoryNotFoundException;
 use carlosV2\DumbsmartRepositories\MetadataManager;
 use carlosV2\DumbsmartRepositories\RepositoryManager;
+use carlosV2\DumbsmartRepositoriesBundle\Configurer\AliasedMetadataFactory;
 use carlosV2\DumbsmartRepositoriesBundle\Configurer\MetadataFactory;
 use carlosV2\DumbsmartRepositoriesBundle\Configurer\ObjectIdentifierFactory;
 use carlosV2\DumbsmartRepositoriesBundle\Configurer\RepositoryFactory;
@@ -40,24 +41,32 @@ class Configurer
     private $rf;
 
     /**
+     * @var AliasedMetadataFactory
+     */
+    private $amf;
+
+    /**
      * @param MetadataManager         $mm
      * @param RepositoryManager       $rm
      * @param ObjectIdentifierFactory $oif
      * @param MetadataFactory         $mf
      * @param RepositoryFactory       $rf
+     * @param AliasedMetadataFactory  $amf
      */
     public function __construct(
         MetadataManager $mm,
         RepositoryManager $rm,
         ObjectIdentifierFactory $oif,
         MetadataFactory $mf,
-        RepositoryFactory $rf
+        RepositoryFactory $rf,
+        AliasedMetadataFactory $amf
     ) {
         $this->mm = $mm;
         $this->rm = $rm;
         $this->oif = $oif;
         $this->mf = $mf;
         $this->rf = $rf;
+        $this->amf = $amf;
     }
 
     /**
@@ -106,11 +115,11 @@ class Configurer
      */
     public function configureAliases(array $aliases)
     {
-        foreach ($aliases as $alias => $className) {
-            $this->mm->getMetadataForClassName($className)->getObjectIdentifier()->setAlias($alias);
+        foreach ($aliases as $alias => $config) {
+            $this->mm->getMetadataForClassName($config['class'])->getObjectIdentifier()->setAlias($alias);
 
-            $this->mm->addMetadata($alias, $this->mm->getMetadataForClassName($className));
-            $this->rm->addRepository($alias, $this->rm->getRepositoryForClassName($className));
+            $this->mm->addMetadata($alias, $this->amf->createAliasedMetadata($config));
+            $this->rm->addRepository($alias, $this->rm->getRepositoryForClassName($config['class']));
         }
     }
 
