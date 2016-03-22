@@ -92,6 +92,7 @@ dumbsmart_repositories:
     aliases:
         alias_class_1: original_class_1
         alias_class_2: original_class_2
+        ...
 ```
 
 Or by using the extended version and aliasing certain fields too (only the ones that change should be defined):
@@ -102,8 +103,11 @@ dumbsmart_repositories:
             class: original_class_1
             mapping:
                 original_class_1_field_A: alias_class_1_field__B
+                ...
         alias_class_2:
             class: original_class_2
             mapping:
                 original_class_2_field_A: alias_class_2_field__B
+                ...
+        ...
 ```

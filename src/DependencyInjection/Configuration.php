@@ -105,12 +105,10 @@ class Configuration implements ConfigurationInterface
                 ->validate()
                     ->ifTrue(function ($alias) {
                         if (!is_array($alias) || !array_key_exists('class', $alias) || !array_key_exists('mapping', $alias)) {
-                            var_dump(1);
                             return true;
                         }
 
                         if (!is_array($alias['mapping'])) {
-                            var_dump(2);
                             return true;
                         }
 
