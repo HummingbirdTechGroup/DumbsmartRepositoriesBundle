@@ -1,0 +1,4 @@
+suites:
+  dumbsmart_repositories_bundle_suite:
+    namespace: carlosV2\DumbsmartRepositoriesBundle
+    psr4_prefix: carlosV2\DumbsmartRepositoriesBundle

@@ -12,23 +12,28 @@
     ],
     "autoload": {
         "psr-4": {
-            "carlosV2\\DumbsmartRepositoriesBundle\\": ""
+            "carlosV2\\DumbsmartRepositoriesBundle\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "spec\\carlosV2\\DumbsmartRepositoriesBundle\\": "spec/"
+            "spec\\carlosV2\\DumbsmartRepositoriesBundle\\": "spec"
         }
     },
     "require": {
-        "php": "~5.4",
+        "php": ">=5.4,<7.1",
         "doctrine/common": "~2.2",
         "symfony/framework-bundle": "~2.0",
         "everzet/persisted-objects": "~1.0",
-        "carlosv2/dumbsmart-repositories": "dev-master"
+        "carlosv2/dumbsmart-repositories": "~1.0"
     },
     "require-dev": {
-        "phpspec/phpspec": "~2.1.0@dev",
-        "bossa/phpspec2-expect": "*"
+        "phpspec/phpspec": "~2.1",
+        "bossa/phpspec2-expect": "~1.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
     }
 }
