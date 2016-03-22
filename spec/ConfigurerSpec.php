@@ -2,8 +2,6 @@
 
 namespace spec\carlosV2\DumbsmartRepositoriesBundle;
 
-use carlosV2\DumbsmartRepositories\Exception\MetadataNotFoundException;
-use carlosV2\DumbsmartRepositories\Exception\RepositoryNotFoundException;
 use carlosV2\DumbsmartRepositories\Metadata;
 use carlosV2\DumbsmartRepositories\MetadataManager;
 use carlosV2\DumbsmartRepositories\RepositoryManager;
@@ -44,11 +42,11 @@ class ConfigurerSpec extends ObjectBehavior
         RepositoryFactory $rf,
         Repository $repository
     ) {
-        $mm->getMetadataForClassName('my_class')->willThrow(MetadataNotFoundException::class);
-        $rm->getRepositoryForClassName('my_class')->willThrow(RepositoryNotFoundException::class);
+        $mm->getMetadataForClassName('my_class')->willThrow('carlosV2\DumbsmartRepositories\Exception\MetadataNotFoundException');
+        $rm->getRepositoryForClassName('my_class')->willThrow('carlosV2\DumbsmartRepositories\Exception\RepositoryNotFoundException');
         $oif->createObjectIdentifier($classMetadata)->willReturn($identifier);
-        $mf->createMetadata($classMetadata, Argument::type(AliasedObjectIdentifier::class))->willReturn($metadata);
-        $rf->createRepository($classMetadata, Argument::type(AliasedObjectIdentifier::class))->willReturn($repository);
+        $mf->createMetadata($classMetadata, Argument::type('carlosV2\DumbsmartRepositoriesBundle\AliasedObjectIdentifier'))->willReturn($metadata);
+        $rf->createRepository($classMetadata, Argument::type('carlosV2\DumbsmartRepositoriesBundle\AliasedObjectIdentifier'))->willReturn($repository);
 
         $factory->getAllMetadata()->willReturn([$classMetadata]);
         $classMetadata->getName()->willReturn('my_class');
@@ -75,8 +73,8 @@ class ConfigurerSpec extends ObjectBehavior
         $mm->getMetadataForClassName('my_class')->willReturn($metadata);
         $rm->getRepositoryForClassName('my_class')->willReturn($repository);
         $oif->createObjectIdentifier($classMetadata)->willReturn($identifier);
-        $mf->createMetadata($classMetadata, Argument::type(AliasedObjectIdentifier::class))->shouldNotBeCalled();
-        $rf->createRepository($classMetadata, Argument::type(AliasedObjectIdentifier::class))->shouldNotBeCalled();
+        $mf->createMetadata($classMetadata, Argument::type('carlosV2\DumbsmartRepositoriesBundle\AliasedObjectIdentifier'))->shouldNotBeCalled();
+        $rf->createRepository($classMetadata, Argument::type('carlosV2\DumbsmartRepositoriesBundle\AliasedObjectIdentifier'))->shouldNotBeCalled();
 
         $factory->getAllMetadata()->willReturn([$classMetadata]);
         $classMetadata->getName()->willReturn('my_class');
@@ -101,12 +99,12 @@ class ConfigurerSpec extends ObjectBehavior
         RepositoryFactory $rf,
         Repository $repository
     ) {
-        $mm->getMetadataForClassName('my_class')->willThrow(MetadataNotFoundException::class);
-        $rm->getRepositoryForClassName('my_class')->willThrow(RepositoryNotFoundException::class);
-        $rm->getRepositoryForClassName('my_parent_class')->willThrow(RepositoryNotFoundException::class);
+        $mm->getMetadataForClassName('my_class')->willThrow('carlosV2\DumbsmartRepositories\Exception\MetadataNotFoundException');
+        $rm->getRepositoryForClassName('my_class')->willThrow('carlosV2\DumbsmartRepositories\Exception\RepositoryNotFoundException');
+        $rm->getRepositoryForClassName('my_parent_class')->willThrow('carlosV2\DumbsmartRepositories\Exception\RepositoryNotFoundException');
         $oif->createObjectIdentifier($classMetadata)->willReturn($identifier);
-        $mf->createMetadata($classMetadata, Argument::type(AliasedObjectIdentifier::class))->willReturn($metadata);
-        $rf->createRepository($parentClassMetadata, Argument::type(AliasedObjectIdentifier::class))->willReturn($repository);
+        $mf->createMetadata($classMetadata, Argument::type('carlosV2\DumbsmartRepositoriesBundle\AliasedObjectIdentifier'))->willReturn($metadata);
+        $rf->createRepository($parentClassMetadata, Argument::type('carlosV2\DumbsmartRepositoriesBundle\AliasedObjectIdentifier'))->willReturn($repository);
 
         $factory->getAllMetadata()->willReturn([$classMetadata]);
         $factory->getMetadataFor('my_parent_class')->willReturn($parentClassMetadata);

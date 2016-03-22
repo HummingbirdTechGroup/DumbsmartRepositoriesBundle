@@ -10,12 +10,12 @@ class AliasedObjectIdentifierSpec extends ObjectBehavior
 {
     function let(ObjectIdentifier $identifier)
     {
-        $this->beConstructedWith(\stdClass::class, $identifier);
+        $this->beConstructedWith('stdClass', $identifier);
     }
 
     function it_is_an_ObjectIdentifier()
     {
-        $this->shouldHaveType(ObjectIdentifier::class);
+        $this->shouldHaveType('Everzet\PersistedObjects\ObjectIdentifier');
     }
 
     function it_returns_the_identifier_of_the_object(ObjectIdentifier $identifier)
@@ -29,11 +29,11 @@ class AliasedObjectIdentifierSpec extends ObjectBehavior
 
     function it_returns_the_identifier_of_an_aliased_object(ObjectIdentifier $identifier)
     {
-        $object = new \DateTime();
+        $object = new \EmptyIterator();
 
-        $identifier->getIdentity(Argument::type(\stdClass::class))->willReturn('123');
+        $identifier->getIdentity(Argument::type('stdClass'))->willReturn('123');
 
-        $this->setAlias(\DateTime::class);
+        $this->setAlias('EmptyIterator');
         $this->getIdentity($object)->shouldReturn('123');
     }
 }

@@ -3,8 +3,6 @@
 namespace spec\carlosV2\DumbsmartRepositoriesBundle\Configurer;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Everzet\PersistedObjects\FileRepository;
-use Everzet\PersistedObjects\InMemoryRepository;
 use Everzet\PersistedObjects\ObjectIdentifier;
 use PhpSpec\ObjectBehavior;
 
@@ -20,7 +18,7 @@ class RepositoryFactorySpec extends ObjectBehavior
         ObjectIdentifier $identifier
     ) {
         $this->beConstructedWith('in_memory', '');
-        $this->createRepository($metadata, $identifier)->shouldBeAnInstanceOf(InMemoryRepository::class);
+        $this->createRepository($metadata, $identifier)->shouldBeAnInstanceOf('Everzet\PersistedObjects\InMemoryRepository');
         $this->createRepository($metadata, $identifier)->shouldHaveObjectIdentifier($identifier);
     }
 
@@ -29,7 +27,7 @@ class RepositoryFactorySpec extends ObjectBehavior
         ObjectIdentifier $identifier
     ) {
         $this->beConstructedWith('file', 'my/directory');
-        $this->createRepository($metadata, $identifier)->shouldBeAnInstanceOf(FileRepository::class);
+        $this->createRepository($metadata, $identifier)->shouldBeAnInstanceOf('Everzet\PersistedObjects\FileRepository');
         $this->createRepository($metadata, $identifier)->shouldHaveObjectIdentifier($identifier);
         $this->createRepository($metadata, $identifier)->shouldHaveFileName('my/directory' . DIRECTORY_SEPARATOR . 'My_Class_Namespace.repository');
     }
@@ -39,7 +37,7 @@ class RepositoryFactorySpec extends ObjectBehavior
         ObjectIdentifier $identifier
     ) {
         $this->beConstructedWith('unknown', '');
-        $this->createRepository($metadata, $identifier)->shouldBeAnInstanceOf(InMemoryRepository::class);
+        $this->createRepository($metadata, $identifier)->shouldBeAnInstanceOf('Everzet\PersistedObjects\InMemoryRepository');
         $this->createRepository($metadata, $identifier)->shouldHaveObjectIdentifier($identifier);
     }
 

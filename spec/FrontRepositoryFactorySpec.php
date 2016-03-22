@@ -2,7 +2,6 @@
 
 namespace spec\carlosV2\DumbsmartRepositoriesBundle;
 
-use carlosV2\DumbsmartRepositories\FrontRepository;
 use carlosV2\DumbsmartRepositories\Persister;
 use PhpSpec\ObjectBehavior;
 
@@ -14,7 +13,7 @@ class FrontRepositoryFactorySpec extends ObjectBehavior
 
         $this->beConstructedWith($persister);
         $repository = $this->getRepository('my_class');
-        $repository->shouldBeAnInstanceOf(FrontRepository::class);
+        $repository->shouldBeAnInstanceOf('carlosV2\DumbsmartRepositories\FrontRepository');
         $repository->clear();
     }
 }

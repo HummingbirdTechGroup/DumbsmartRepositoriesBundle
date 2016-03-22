@@ -3,7 +3,6 @@
 namespace spec\carlosV2\DumbsmartRepositoriesBundle;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Everzet\PersistedObjects\ObjectIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class DoctrineObjectIdentifierSpec extends ObjectBehavior
@@ -15,7 +14,7 @@ class DoctrineObjectIdentifierSpec extends ObjectBehavior
 
     function it_is_an_ObjectIdentifier()
     {
-        $this->shouldHaveType(ObjectIdentifier::class);
+        $this->shouldHaveType('Everzet\PersistedObjects\ObjectIdentifier');
     }
 
     function it_computes_the_single_id_of_an_object(ClassMetadata $metadata)
