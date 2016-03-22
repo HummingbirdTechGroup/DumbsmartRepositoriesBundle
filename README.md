@@ -102,12 +102,12 @@ dumbsmart_repositories:
         alias_class_1:
             class: original_class_1
             mapping:
-                original_class_1_field_A: alias_class_1_field__B
+                original_class_1_field_A: alias_class_1_field_B
                 ...
         alias_class_2:
             class: original_class_2
             mapping:
-                original_class_2_field_A: alias_class_2_field__B
+                original_class_2_field_A: alias_class_2_field_B
                 ...
         ...
 ```

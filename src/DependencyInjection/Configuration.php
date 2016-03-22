@@ -47,7 +47,15 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue(sys_get_temp_dir())
                     ->beforeNormalization()
                         ->always(function ($path) {
-                            return ($path ? realpath($path) : sys_get_temp_dir());
+                            $path = ($path ?: '{sys_temp_dir}');
+                            $path = str_replace('{sys_temp_dir}', sys_get_temp_dir() . '/', $path);
+                            $path = str_replace('//', '/', $path);
+
+                            if (!is_dir($path) && !mkdir($path, 0777, true)) {
+                                throw new \InvalidArgumentException('Cannot create folder `' . $path . '`.');
+                            }
+
+                            return $path;
                         })
                     ->end()
                     ->validate()
