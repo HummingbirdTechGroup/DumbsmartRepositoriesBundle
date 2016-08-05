@@ -21,9 +21,9 @@
         }
     },
     "require": {
-        "php": ">=5.4,<7.1",
-        "doctrine/common": ">=2.2,<2.6",
-        "symfony/framework-bundle": ">=2.3,<2.9",
+        "php": ">=5.4",
+        "doctrine/common": ">=2.2",
+        "symfony/framework-bundle": ">=2.3",
         "everzet/persisted-objects": "~1.0",
         "carlosv2/dumbsmart-repositories": "~1.0"
     },
