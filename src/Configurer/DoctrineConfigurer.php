@@ -1,15 +1,15 @@
 <?php
 
-namespace carlosV2\DumbsmartRepositoriesBundle;
+namespace carlosV2\DumbsmartRepositoriesBundle\Configurer;
 
 use carlosV2\DumbsmartRepositories\Exception\MetadataNotFoundException;
 use carlosV2\DumbsmartRepositories\Exception\RepositoryNotFoundException;
 use carlosV2\DumbsmartRepositories\MetadataManager;
 use carlosV2\DumbsmartRepositories\RepositoryManager;
-use carlosV2\DumbsmartRepositoriesBundle\Configurer\AliasedMetadataFactory;
-use carlosV2\DumbsmartRepositoriesBundle\Configurer\MetadataFactory;
-use carlosV2\DumbsmartRepositoriesBundle\Configurer\ObjectIdentifierFactory;
-use carlosV2\DumbsmartRepositoriesBundle\Configurer\RepositoryFactory;
+use carlosV2\DumbsmartRepositoriesBundle\Metadata\DoctrineMetadataFactory;
+use carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier\AliasedObjectIdentifier;
+use carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier\ObjectIdentifierFactory;
+use carlosV2\DumbsmartRepositoriesBundle\Repository\RepositoryFactory;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory;
 
@@ -31,9 +31,9 @@ class DoctrineConfigurer
     private $oif;
 
     /**
-     * @var MetadataFactory
+     * @var DoctrineMetadataFactory
      */
-    private $mf;
+    private $dmf;
 
     /**
      * @var RepositoryFactory
@@ -41,85 +41,64 @@ class DoctrineConfigurer
     private $rf;
 
     /**
-     * @var AliasedMetadataFactory
-     */
-    private $amf;
-
-    /**
      * @param MetadataManager         $mm
      * @param RepositoryManager       $rm
      * @param ObjectIdentifierFactory $oif
-     * @param MetadataFactory         $mf
+     * @param DoctrineMetadataFactory $dmf
      * @param RepositoryFactory       $rf
-     * @param AliasedMetadataFactory  $amf
      */
     public function __construct(
         MetadataManager $mm,
         RepositoryManager $rm,
         ObjectIdentifierFactory $oif,
-        MetadataFactory $mf,
-        RepositoryFactory $rf,
-        AliasedMetadataFactory $amf
+        DoctrineMetadataFactory $dmf,
+        RepositoryFactory $rf
     ) {
         $this->mm = $mm;
         $this->rm = $rm;
         $this->oif = $oif;
-        $this->mf = $mf;
+        $this->dmf = $dmf;
         $this->rf = $rf;
-        $this->amf = $amf;
     }
 
     /**
      * @param ClassMetadataFactory $factory
      */
-    public function configureEntities(ClassMetadataFactory $factory)
+    public function configure(ClassMetadataFactory $factory)
     {
         foreach ($factory->getAllMetadata() as $metadata) {
             $className = $metadata->getName();
             $parentClassName = $this->getParentClassName($metadata);
             $identifier = new AliasedObjectIdentifier(
                 $className,
-                $this->oif->createObjectIdentifier($metadata)
+                $this->oif->createDoctrineObjectIdentifier($metadata)
             );
 
             try {
                 $this->mm->getMetadataForClassName($className);
             } catch (MetadataNotFoundException $e) {
-                $this->mm->addMetadata($className, $this->mf->createMetadata($metadata, $identifier));
+                $this->mm->addMetadata($className, $this->dmf->createMetadata($metadata, $identifier));
             }
 
             if ($className === $parentClassName) {
                 try {
                     $repository = $this->rm->getRepositoryForClassName($className);
                 } catch (RepositoryNotFoundException $e) {
-                    $repository = $this->rf->createRepository($metadata, $identifier);
+                    $repository = $this->rf->createRepository($metadata->getName(), $identifier);
                 }
             } else {
                 try {
                     $repository = $this->rm->getRepositoryForClassName($parentClassName);
                 } catch (RepositoryNotFoundException $e) {
-                    $repository = $this->rf->createRepository($factory->getMetadataFor($parentClassName), $identifier);
+                    $repository = $this->rf->createRepository(
+                        $factory->getMetadataFor($parentClassName)->getName(),
+                        $identifier
+                    );
                 }
                 $this->rm->addRepository($parentClassName, $repository);
             }
 
             $this->rm->addRepository($className, $repository);
-        }
-    }
-
-    /**
-     * @param array $aliases
-     *
-     * @throws MetadataNotFoundException
-     * @throws RepositoryNotFoundException
-     */
-    public function configureAliases(array $aliases)
-    {
-        foreach ($aliases as $alias => $config) {
-            $this->mm->getMetadataForClassName($config['class'])->getObjectIdentifier()->setAlias($alias);
-
-            $this->mm->addMetadata($alias, $this->amf->createAliasedMetadata($config));
-            $this->rm->addRepository($alias, $this->rm->getRepositoryForClassName($config['class']));
         }
     }
 
