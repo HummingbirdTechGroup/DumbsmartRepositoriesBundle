@@ -1,6 +1,6 @@
 <?php
 
-namespace carlosV2\DumbsmartRepositoriesBundle;
+namespace carlosV2\DumbsmartRepositoriesBundle\Repository;
 
 use carlosV2\DumbsmartRepositories\FrontRepository;
 use carlosV2\DumbsmartRepositories\Persister;

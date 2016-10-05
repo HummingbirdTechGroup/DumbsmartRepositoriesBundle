@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\carlosV2\DumbsmartRepositoriesBundle;
+namespace spec\carlosV2\DumbsmartRepositoriesBundle\Repository;
 
 use carlosV2\DumbsmartRepositories\Persister;
 use PhpSpec\ObjectBehavior;
