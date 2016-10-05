@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\carlosV2\DumbsmartRepositoriesBundle;
+namespace spec\carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier;
 
 use Everzet\PersistedObjects\ObjectIdentifier;
 use PhpSpec\ObjectBehavior;
