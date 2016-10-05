@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\carlosV2\DumbsmartRepositoriesBundle\Configurer;
+namespace spec\carlosV2\DumbsmartRepositoriesBundle\Metadata;
 
 use carlosV2\DumbsmartRepositories\Metadata;
 use carlosV2\DumbsmartRepositories\Relation\OneToManyRelation;
@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Everzet\PersistedObjects\ObjectIdentifier;
 use PhpSpec\ObjectBehavior;
 
-class MetadataFactorySpec extends ObjectBehavior
+class DoctrineMetadataFactorySpec extends ObjectBehavior
 {
     function it_returns_metadata_configured_from_an_ORM_schema(
         ObjectIdentifier $identifier,

@@ -1,6 +1,6 @@
 <?php
 
-namespace carlosV2\DumbsmartRepositoriesBundle\Configurer;
+namespace carlosV2\DumbsmartRepositoriesBundle\Metadata;
 
 use carlosV2\DumbsmartRepositories\Metadata;
 use carlosV2\DumbsmartRepositories\Relation\OneToManyRelation;
@@ -8,7 +8,7 @@ use carlosV2\DumbsmartRepositories\Relation\OneToOneRelation;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Everzet\PersistedObjects\ObjectIdentifier;
 
-class MetadataFactory
+class DoctrineMetadataFactory
 {
     const ORM_TO_ONE_BITMASK = 3;
     const ORM_TO_MANY_BITMASK = 12;
