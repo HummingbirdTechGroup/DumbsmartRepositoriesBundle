@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->getRepositoriesConfiguration())
                 ->append($this->getAutoconfigureConfiguration())
                 ->append($this->getAliasesConfiguration())
+                ->append($this->getEntitiesConfiguration())
             ->end()
         ;
 
@@ -129,6 +130,58 @@ class Configuration implements ConfigurationInterface
                         return false;
                     })
                     ->thenInvalid('Wrong alias configuration')
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * @return NodeDefinition
+     */
+    private function getEntitiesConfiguration()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('entities');
+
+        return $node
+            ->useAttributeAsKey('name')
+            ->prototype('variable')
+                ->beforeNormalization()
+                    ->always(function ($entity) {
+                        if (is_array($entity) && !array_key_exists('relations', $entity)) {
+                            $entity['relations'] = [];
+                        }
+
+                        return $entity;
+                    })
+                ->end()
+                ->validate()
+                    ->ifTrue(function ($entity) {
+                        if (!is_array($entity)) {
+                            return true;
+                        }
+
+                        if (!(array_key_exists('id', $entity) xor array_key_exists('extends', $entity))) {
+                            return true;
+                        }
+
+                        if (count($entity) > 2) {
+                            return true;
+                        }
+
+                        foreach ($entity['relations'] as $field => $relation) {
+                            if (!is_string($field) || !is_string($relation)) {
+                                return true;
+                            }
+
+                            if (!in_array($relation, ['one', 'many'])) {
+                                return true;
+                            }
+                        }
+
+                        return false;
+                    })
+                    ->thenInvalid('Wrong entity configuration')
                 ->end()
             ->end()
         ;

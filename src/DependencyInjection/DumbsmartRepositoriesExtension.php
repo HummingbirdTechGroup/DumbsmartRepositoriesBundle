@@ -25,5 +25,6 @@ class DumbsmartRepositoriesExtension extends Extension
         $container->setParameter('dumbsmart_repositories.config.repositories.type', $config['repositories']['type']);
         $container->setParameter('dumbsmart_repositories.config.repositories.path', $config['repositories']['path']);
         $container->setParameter('dumbsmart_repositories.config.aliases', $config['aliases']);
+        $container->setParameter('dumbsmart_repositories.config.entities', $config['entities']);
     }
 }
