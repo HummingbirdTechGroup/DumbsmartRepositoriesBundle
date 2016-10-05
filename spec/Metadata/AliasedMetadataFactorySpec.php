@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\carlosV2\DumbsmartRepositoriesBundle\Configurer;
+namespace spec\carlosV2\DumbsmartRepositoriesBundle\Metadata;
 
 use carlosV2\DumbsmartRepositories\Metadata;
 use carlosV2\DumbsmartRepositories\MetadataManager;
@@ -25,7 +25,7 @@ class AliasedMetadataFactorySpec extends ObjectBehavior
 
     function it_creates_a_replica_of_the_original_metadata(ObjectIdentifier $identifier)
     {
-        $this->createAliasedMetadata(['class' => 'my_class', 'mapping' => []])->shouldReturnMetadataWith(
+        $this->createMetadata(['class' => 'my_class', 'mapping' => []])->shouldReturnMetadataWith(
             $identifier,
             [new OneToOneRelation('my_field_1'), new OneToManyRelation('my_field_2')]
         );
@@ -33,7 +33,7 @@ class AliasedMetadataFactorySpec extends ObjectBehavior
 
     function it_replaces_the_specified_fields_from_the_original_metadata(ObjectIdentifier $identifier)
     {
-        $this->createAliasedMetadata([
+        $this->createMetadata([
             'class' => 'my_class',
             'mapping' => ['my_field_1' => 'my_aliases_field_1']
         ])->shouldReturnMetadataWith(

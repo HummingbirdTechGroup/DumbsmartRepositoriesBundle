@@ -1,6 +1,6 @@
 <?php
 
-namespace carlosV2\DumbsmartRepositoriesBundle\Configurer;
+namespace carlosV2\DumbsmartRepositoriesBundle\Metadata;
 
 use carlosV2\DumbsmartRepositories\Exception\MetadataNotFoundException;
 use carlosV2\DumbsmartRepositories\Metadata;
@@ -31,17 +31,19 @@ class AliasedMetadataFactory
      *
      * @throws MetadataNotFoundException
      */
-    public function createAliasedMetadata(array $alias)
+    public function createMetadata(array $alias)
     {
         $metadata = $this->manager->getMetadataForClassName($alias['class']);
         $aliasedMetadata = new Metadata($metadata->getObjectIdentifier());
 
         foreach ($metadata->getRelations() as $relation) {
             if (array_key_exists($relation->getField(), $alias['mapping'])) {
-                $aliasedMetadata->setRelation($this->createAliasedRelation(
-                    $alias['mapping'][$relation->getField()],
-                    $relation
-                ));
+                $aliasedMetadata->setRelation(
+                    $this->createAliasedRelation(
+                        $alias['mapping'][$relation->getField()],
+                        $relation
+                    )
+                );
             } else {
                 $aliasedMetadata->setRelation($relation);
             }
