@@ -11,7 +11,7 @@ class DumbsmartRepositoriesBundle extends Bundle
      */
     public function boot()
     {
-        $configurer = $this->container->get('dumbsmart_repositories.configurer');
+        $configurer = $this->container->get('dumbsmart_repositories.doctrine_configurer');
 
         if ($this->container->getParameter('dumbsmart_repositories.config.autoload.orm')) {
             $entityManager = $this->container->get('doctrine.orm.entity_manager');

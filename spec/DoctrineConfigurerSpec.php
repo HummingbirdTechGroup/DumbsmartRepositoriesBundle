@@ -17,7 +17,7 @@ use Everzet\PersistedObjects\Repository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class ConfigurerSpec extends ObjectBehavior
+class DoctrineConfigurerSpec extends ObjectBehavior
 {
     function let(
         MetadataManager $mm,

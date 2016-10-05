@@ -10,7 +10,7 @@
         <parameter key="dumbsmart_repositories.persister.class">carlosV2\DumbsmartRepositories\Persister</parameter>
         <parameter key="dumbsmart_repositories.transaction_factory.class">carlosV2\DumbsmartRepositories\TransactionFactory</parameter>
         <parameter key="dumbsmart_repositories.front_repository_factory.class">carlosV2\DumbsmartRepositoriesBundle\FrontRepositoryFactory</parameter>
-        <parameter key="dumbsmart_repositories.configurer.class">carlosV2\DumbsmartRepositoriesBundle\Configurer</parameter>
+        <parameter key="dumbsmart_repositories.doctrine_configurer.class">carlosV2\DumbsmartRepositoriesBundle\DoctrineConfigurer</parameter>
         <parameter key="dumbsmart_repositories.object_identifier_factory.class">carlosV2\DumbsmartRepositoriesBundle\Configurer\ObjectIdentifierFactory</parameter>
         <parameter key="dumbsmart_repositories.metadata_factory.class">carlosV2\DumbsmartRepositoriesBundle\Configurer\MetadataFactory</parameter>
         <parameter key="dumbsmart_repositories.repository_factory.class">carlosV2\DumbsmartRepositoriesBundle\Configurer\RepositoryFactory</parameter>
@@ -40,7 +40,7 @@
         <service id="dumbsmart_repositories.aliased_metadata_factory" class="%dumbsmart_repositories.aliased_metadata_factory.class%" public="false">
             <argument type="service" id="dumbsmart_repositories.metadata_manager" />
         </service>
-        <service id="dumbsmart_repositories.configurer" class="%dumbsmart_repositories.configurer.class%">
+        <service id="dumbsmart_repositories.doctrine_configurer" class="%dumbsmart_repositories.doctrine_configurer.class%">
             <argument type="service" id="dumbsmart_repositories.metadata_manager" />
             <argument type="service" id="dumbsmart_repositories.repository_manager" />
             <argument type="service" id="dumbsmart_repositories.object_identifier_factory" />
