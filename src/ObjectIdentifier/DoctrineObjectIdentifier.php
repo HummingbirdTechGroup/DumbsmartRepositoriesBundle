@@ -1,6 +1,6 @@
 <?php
 
-namespace carlosV2\DumbsmartRepositoriesBundle;
+namespace carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Everzet\PersistedObjects\ObjectIdentifier;

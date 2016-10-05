@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\carlosV2\DumbsmartRepositoriesBundle;
+namespace spec\carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
