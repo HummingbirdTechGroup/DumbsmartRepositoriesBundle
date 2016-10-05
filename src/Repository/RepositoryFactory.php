@@ -1,8 +1,7 @@
 <?php
 
-namespace carlosV2\DumbsmartRepositoriesBundle\Configurer;
+namespace carlosV2\DumbsmartRepositoriesBundle\Repository;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Everzet\PersistedObjects\FileRepository;
 use Everzet\PersistedObjects\InMemoryRepository;
 use Everzet\PersistedObjects\ObjectIdentifier;
@@ -34,16 +33,16 @@ class RepositoryFactory
     }
 
     /**
-     * @param ClassMetadata    $metadata
+     * @param string           $className
      * @param ObjectIdentifier $identifier
      *
      * @return Repository
      */
-    public function createRepository(ClassMetadata $metadata, ObjectIdentifier $identifier)
+    public function createRepository($className, ObjectIdentifier $identifier)
     {
         switch ($this->type) {
             case self::TYPE_FILE:
-                return new FileRepository($this->getFileName($metadata), $identifier);
+                return new FileRepository($this->getFileName($className), $identifier);
 
             default:
                 return new InMemoryRepository($identifier);
@@ -51,19 +50,19 @@ class RepositoryFactory
     }
 
     /**
-     * @param ClassMetadata $metadata
+     * @param string $className
      *
      * @return string
      *
      * @throws \InvalidArgumentException
      */
-    private function getFileName(ClassMetadata $metadata)
+    private function getFileName($className)
     {
         return sprintf(
             '%s%s%s.repository',
             rtrim($this->path, DIRECTORY_SEPARATOR),
             DIRECTORY_SEPARATOR,
-            str_replace('\\', '_', $metadata->getName())
+            str_replace('\\', '_', $className)
         );
     }
 }
