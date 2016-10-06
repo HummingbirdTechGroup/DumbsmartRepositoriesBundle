@@ -2,8 +2,8 @@
 
 namespace carlosV2\DumbsmartRepositoriesBundle\DependencyInjection;
 
-use carlosV2\DumbsmartRepositoriesBundle\Configurer\RepositoryFactory;
 use carlosV2\DumbsmartRepositoriesBundle\Metadata\EntityMetadataFactory;
+use carlosV2\DumbsmartRepositoriesBundle\Repository\RepositoryFactory;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
