@@ -29,7 +29,7 @@ Step 2: Enable the Bundle
 
 Then, enable the bundle by adding it to the list of registered bundles
 in the `app/AppKernel.php` file of your project (as it is meant to be for
-development, you would place it under your development configuration in
+development, you may want to place it under your development configuration in
 this file):
 
 ```php
@@ -66,6 +66,7 @@ dumbsmart_repositories:
     autoconfigure:
         orm: <boolean>
         odm: <boolean>
+    entities: <array>
     aliases: <array>
 ```
 
@@ -74,7 +75,48 @@ Where any value is optional being them:
 - dumbsmart_repositories.repositories.path: If repository typ is `file`, this is the folder to create them. Default value: systems temp folder.
 - dumbsmart_repositories.autoconfigure.orm: Configure it from doctrine's entities configuration. Default value: `false`.
 - dumbsmart_repositories.autoconfigure.odm: Configure it from doctrine's documents configuration. Default value: `false`.
+- dumbsmart_repositories.entities: Manual entities configuration. Default value: empty array.
 - dumbsmart_repositories.aliases: Set of class aliases for repositories reutilisation. Default value: empty array.
+
+Entities
+--------
+
+You may use entities for:
+- Entities that cannot be autoconfigured
+- Injecting repository on a system that does not support Doctrine
+
+You don't need entities for:
+- Objects that you won't need to store in a repository
+
+Each entity must have the following fields:
+```
+dumbsmart_repositories:
+    entities:
+        class_1:
+            id: id_property
+            relations:
+                property_1: many
+                property_2: one
+                ...
+        class_2:
+            extends: class_1
+            relations:
+                property_3: one
+                property_4: many
+                ...
+        ...
+```
+
+Where:
+- id: Points to the ID property in the given class.
+- extends: Points to the class that this class is extending from.
+- relations: Holds a list of the properties with relations. You only need to set the properties that mapp to other objects
+  which you also want to have repositories for. Any object mapped as part of any relation must also have an entry in `entities`.
+  Default value: empty array. 
+
+Be aware that a class can only have either `id` or `extends` fields but not both. Also, each property of `relations` can
+only have `one` or `many` as assigned values.
+
 
 Aliases
 -------
@@ -111,3 +153,19 @@ dumbsmart_repositories:
                 ...
         ...
 ```
+
+Usage
+=====
+
+Once you have completed the configuration, you can request a repository by injecting a service into the dependency
+injection as follows:
+```
+<service id="class.repository"
+         class="Everzet\PersistedObjects\Repository">
+    <factory service="dumbsmart_repositories.front_repository_factory" method="getRepository" />
+    <argument>class</argument>
+</service>
+```
+
+You can create as many repositories as you want but be aware that, depending on the configuration, the same repository
+might be returned for different classes.
