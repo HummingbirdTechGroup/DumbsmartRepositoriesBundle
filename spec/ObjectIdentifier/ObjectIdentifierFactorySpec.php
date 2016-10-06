@@ -14,6 +14,6 @@ class ObjectIdentifierFactorySpec extends ObjectBehavior
 
     function it_creates_a_PropertyObjectIdentifier()
     {
-        $this->createPropertyObjectIdentifier('property')->shouldBeAnInstanceOf('carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier\PropertyObjectIdentifier');
+        $this->createPropertyObjectIdentifier('m_class', 'property')->shouldBeAnInstanceOf('carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier\PropertyObjectIdentifier');
     }
 }

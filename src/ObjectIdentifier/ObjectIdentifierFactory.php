@@ -17,12 +17,13 @@ class ObjectIdentifierFactory
     }
 
     /**
+     * @param string $className
      * @param string $property
      *
      * @return PropertyObjectIdentifier
      */
-    public function createPropertyObjectIdentifier($property)
+    public function createPropertyObjectIdentifier($className, $property)
     {
-        return new PropertyObjectIdentifier($property);
+        return new PropertyObjectIdentifier($className, $property);
     }
 }

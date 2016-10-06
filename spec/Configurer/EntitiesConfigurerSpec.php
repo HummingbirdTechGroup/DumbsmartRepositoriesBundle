@@ -37,7 +37,7 @@ class EntitiesConfigurerSpec extends ObjectBehavior
     ) {
         $mm->getMetadataForClassName('my_class')->willThrow('carlosV2\DumbsmartRepositories\Exception\MetadataNotFoundException');
         $rm->getRepositoryForClassName('my_class')->willThrow('carlosV2\DumbsmartRepositories\Exception\RepositoryNotFoundException');
-        $oif->createPropertyObjectIdentifier('my_id_field')->willReturn($identifier);
+        $oif->createPropertyObjectIdentifier('my_class', 'my_id_field')->willReturn($identifier);
         $emf->createMetadata(['relations'], Argument::type('carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier\AliasedObjectIdentifier'))->willReturn($metadata);
         $rf->createRepository('my_class', Argument::type('carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier\AliasedObjectIdentifier'))->willReturn($repository);
 
@@ -64,7 +64,7 @@ class EntitiesConfigurerSpec extends ObjectBehavior
     ) {
         $mm->getMetadataForClassName('my_class')->willReturn($metadata);
         $rm->getRepositoryForClassName('my_class')->willReturn($repository);
-        $oif->createPropertyObjectIdentifier('my_id_field')->willReturn($identifier);
+        $oif->createPropertyObjectIdentifier('my_class', 'my_id_field')->willReturn($identifier);
         $emf->createMetadata(['relations'], Argument::type('carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier\AliasedObjectIdentifier'))->shouldNotBeCalled();
         $rf->createRepository('my_class', Argument::type('carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier\AliasedObjectIdentifier'))->shouldNotBeCalled();
 
@@ -93,7 +93,7 @@ class EntitiesConfigurerSpec extends ObjectBehavior
         $mm->getMetadataForClassName('my_parent_class')->willThrow('carlosV2\DumbsmartRepositories\Exception\MetadataNotFoundException');
         $rm->getRepositoryForClassName('my_child_class')->willThrow('carlosV2\DumbsmartRepositories\Exception\RepositoryNotFoundException');
         $rm->getRepositoryForClassName('my_parent_class')->willThrow('carlosV2\DumbsmartRepositories\Exception\RepositoryNotFoundException');
-        $oif->createPropertyObjectIdentifier('my_id_field')->willReturn($identifier);
+        $oif->createPropertyObjectIdentifier('my_parent_class', 'my_id_field')->willReturn($identifier);
         $emf->createMetadata(['parent_relations', 'child_relations'], Argument::type('carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier\AliasedObjectIdentifier'))->willReturn($metadata);
         $emf->createMetadata(['parent_relations'], Argument::type('carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier\AliasedObjectIdentifier'))->willReturn($metadata);
         $rf->createRepository('my_parent_class', Argument::type('carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier\AliasedObjectIdentifier'))->willReturn($repository);

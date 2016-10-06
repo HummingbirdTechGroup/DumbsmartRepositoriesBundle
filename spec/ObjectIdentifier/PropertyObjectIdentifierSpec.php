@@ -2,13 +2,15 @@
 
 namespace spec\carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier;
 
+use carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier\AliasedObjectIdentifier;
+use Everzet\PersistedObjects\ObjectIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class PropertyObjectIdentifierSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('my_field');
+        $this->beConstructedWith('carlosV2\DumbsmartRepositoriesBundle\ObjectIdentifier\AliasedObjectIdentifier', 'identifier');
     }
 
     function it_is_an_ObjectIdentifier()
@@ -16,11 +18,10 @@ class PropertyObjectIdentifierSpec extends ObjectBehavior
         $this->shouldHaveType('Everzet\PersistedObjects\ObjectIdentifier');
     }
 
-    function it_returns_the_identifier_of_the_object()
+    function it_returns_the_identifier_of_the_object(ObjectIdentifier $identifier)
     {
-        $object = new \stdClass();
-        $object->my_field = '123';
+        $object = new AliasedObjectIdentifier('class_name', $identifier->getWrappedObject());
 
-        $this->getIdentity($object)->shouldReturn('123');
+        $this->getIdentity($object)->shouldReturn($identifier);
     }
 }

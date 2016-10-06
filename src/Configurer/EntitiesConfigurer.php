@@ -67,7 +67,7 @@ class EntitiesConfigurer
         foreach ($this->getComposedEntities($entities) as $className => $entity) {
             $identifier = new AliasedObjectIdentifier(
                 $className,
-                $this->oif->createPropertyObjectIdentifier($entity['id'])
+                $this->oif->createPropertyObjectIdentifier($entity['extends'], $entity['id'])
             );
 
             try {

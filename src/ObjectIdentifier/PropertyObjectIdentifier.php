@@ -9,13 +9,20 @@ class PropertyObjectIdentifier implements ObjectIdentifier
     /**
      * @var string
      */
+    private $className;
+
+    /**
+     * @var string
+     */
     private $property;
 
     /**
+     * @param string $className
      * @param string $property
      */
-    public function __construct($property)
+    public function __construct($className, $property)
     {
+        $this->className = $className;
         $this->property = $property;
     }
 
@@ -24,7 +31,7 @@ class PropertyObjectIdentifier implements ObjectIdentifier
      */
     public function getIdentity($object)
     {
-        $property = new \ReflectionProperty($object, $this->property);
+        $property = new \ReflectionProperty($this->className, $this->property);
         $property->setAccessible(true);
 
         return $property->getValue($object);
