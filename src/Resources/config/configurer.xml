@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="dumbsmart_repositories.aliases_configurer.class">carlosV2\DumbsmartRepositoriesBundle\Configurer\AliasesConfigurer</parameter>
+        <parameter key="dumbsmart_repositories.doctrine_configurer.class">carlosV2\DumbsmartRepositoriesBundle\Configurer\DoctrineConfigurer</parameter>
+        <parameter key="dumbsmart_repositories.entities_configurer.class">carlosV2\DumbsmartRepositoriesBundle\Configurer\EntitiesConfigurer</parameter>
+    </parameters>
+
+    <services>
+        <service id="dumbsmart_repositories.aliases_configurer" class="%dumbsmart_repositories.aliases_configurer.class%">
+            <argument type="service" id="dumbsmart_repositories.metadata_manager" />
+            <argument type="service" id="dumbsmart_repositories.repository_manager" />
+            <argument type="service" id="dumbsmart_repositories.aliased_metadata_factory" />
+        </service>
+
+        <service id="dumbsmart_repositories.doctrine_configurer" class="%dumbsmart_repositories.doctrine_configurer.class%">
+            <argument type="service" id="dumbsmart_repositories.metadata_manager" />
+            <argument type="service" id="dumbsmart_repositories.repository_manager" />
+            <argument type="service" id="dumbsmart_repositories.object_identifier_factory" />
+            <argument type="service" id="dumbsmart_repositories.doctrine_metadata_factory" />
+            <argument type="service" id="dumbsmart_repositories.repository_factory" />
+        </service>
+
+        <service id="dumbsmart_repositories.entities_configurer" class="%dumbsmart_repositories.entities_configurer.class%">
+            <argument type="service" id="dumbsmart_repositories.metadata_manager" />
+            <argument type="service" id="dumbsmart_repositories.repository_manager" />
+            <argument type="service" id="dumbsmart_repositories.object_identifier_factory" />
+            <argument type="service" id="dumbsmart_repositories.entity_metadata_factory" />
+            <argument type="service" id="dumbsmart_repositories.repository_factory" />
+        </service>
+    </services>
+</container>

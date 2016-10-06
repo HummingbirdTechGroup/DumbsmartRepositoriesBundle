@@ -3,6 +3,7 @@
 namespace carlosV2\DumbsmartRepositoriesBundle\DependencyInjection;
 
 use carlosV2\DumbsmartRepositoriesBundle\Configurer\RepositoryFactory;
+use carlosV2\DumbsmartRepositoriesBundle\Metadata\EntityMetadataFactory;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -174,7 +175,7 @@ class Configuration implements ConfigurationInterface
                                 return true;
                             }
 
-                            if (!in_array($relation, ['one', 'many'])) {
+                            if (!in_array($relation, [EntityMetadataFactory::ONE_TO_ONE_RELATION, EntityMetadataFactory::ONE_TO_MANY_RELATION])) {
                                 return true;
                             }
                         }

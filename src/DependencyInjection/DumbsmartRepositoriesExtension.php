@@ -18,6 +18,10 @@ class DumbsmartRepositoriesExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('configurer.xml');
+        $loader->load('metadata.xml');
+        $loader->load('object_identifier.xml');
+        $loader->load('repository.xml');
         $loader->load('services.xml');
 
         $container->setParameter('dumbsmart_repositories.config.autoload.orm', $config['autoconfigure']['orm']);

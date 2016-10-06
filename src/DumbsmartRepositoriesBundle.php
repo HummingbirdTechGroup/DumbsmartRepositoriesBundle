@@ -11,6 +11,20 @@ class DumbsmartRepositoriesBundle extends Bundle
      */
     public function boot()
     {
+        $this->configureEntities();
+        $this->configureDoctrine();
+        $this->configureAliases();
+    }
+
+    private function configureEntities()
+    {
+        $configurer = $this->container->get('dumbsmart_repositories.entities_configurer');
+
+        $configurer->configure($this->container->getParameter('dumbsmart_repositories.config.entities'));
+    }
+
+    private function configureDoctrine()
+    {
         $configurer = $this->container->get('dumbsmart_repositories.doctrine_configurer');
 
         if ($this->container->getParameter('dumbsmart_repositories.config.autoload.orm')) {
@@ -22,6 +36,11 @@ class DumbsmartRepositoriesBundle extends Bundle
             $documentManager = $this->container->get('doctrine_mongodb.odm.document_manager');
             $configurer->configureEntities($documentManager->getMetadataFactory());
         }
+    }
+
+    private function configureAliases()
+    {
+        $configurer = $this->container->get('dumbsmart_repositories.aliases_configurer');
 
         $configurer->configureAliases($this->container->getParameter('dumbsmart_repositories.config.aliases'));
     }
