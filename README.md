@@ -1,6 +1,6 @@
 ## Dumbsmart Repositories Bundle
 
-This project is a bridge between [Dumbsmart Repositories](https://github.com/carlosV2/DumbsmartRepositories/blob/master/README.md)
+This project is a bridge between [Dumbsmart Repositories](https://github.com/carlosV2/DumbsmartRepositories)
 and a symfony project.
 
 [![License](https://poser.pugx.org/carlosv2/dumbsmart-repositories-bundle/license)](https://packagist.org/packages/carlosv2/dumbsmart-repositories-bundle)
