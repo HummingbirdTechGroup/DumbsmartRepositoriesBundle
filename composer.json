@@ -23,7 +23,7 @@
     "require": {
         "php": ">=5.5",
         "doctrine/common": "~2.2",
-        "symfony/framework-bundle": "~2.3",
+        "symfony/framework-bundle": "~2.3 || ~3.0",
         "everzet/persisted-objects": "~1.0",
         "carlosv2/dumbsmart-repositories": "~1.0"
     },
