@@ -34,6 +34,9 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
+        },
+        "symfony": {
+            "bundles": ["carlosV2\\DumbsmartRepositoriesBundle\\DumbsmartRepositoriesBundle"]
         }
     },
     "suggest": {
