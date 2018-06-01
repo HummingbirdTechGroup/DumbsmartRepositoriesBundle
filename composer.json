@@ -21,7 +21,7 @@
         }
     },
     "require": {
-        "php": ">=5.5",
+        "php": "~5.5 || ~7.0",
         "doctrine/common": "~2.2",
         "symfony/framework-bundle": "~2.3 || ~3.0",
         "everzet/persisted-objects": "~1.0",
