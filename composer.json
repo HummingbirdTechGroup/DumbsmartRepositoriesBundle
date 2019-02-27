@@ -20,12 +20,18 @@
             "spec\\carlosV2\\DumbsmartRepositoriesBundle\\": "spec"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:HummingbirdTechGroup/DumbsmartRepositoriesBundle.git"
+        }
+    ],
     "require": {
         "php": "~5.5 || ~7.0",
         "doctrine/common": "~2.2",
         "symfony/framework-bundle": "~2.3 || ~3.0",
         "everzet/persisted-objects": "~1.0",
-        "carlosv2/dumbsmart-repositories": "~1.0"
+        "carlosv2/dumbsmart-repositories": "dev-master"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.1",
