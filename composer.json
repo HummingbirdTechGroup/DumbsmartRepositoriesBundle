@@ -23,7 +23,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url":  "git@github.com:HummingbirdTechGroup/DumbsmartRepositoriesBundle.git"
+            "url":  "git@github.com:HummingbirdTechGroup/DumbsmartRepositories.git"
         }
     ],
     "require": {
