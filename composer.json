@@ -31,7 +31,7 @@
         "doctrine/common": "~2.2",
         "symfony/framework-bundle": "~2.3 || ~3.0",
         "everzet/persisted-objects": "~1.0",
-        "carlosv2/dumbsmart-repositories": "dev-ht-fork"
+        "carlosv2/dumbsmart-repositories": "dev-ht-fork@dev"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.1",
