@@ -24,13 +24,17 @@
         {
             "type": "vcs",
             "url":  "git@github.com:HummingbirdTechGroup/DumbsmartRepositories.git"
+        },
+        {
+            "type": "vcs",
+            "url":  "git@github.com:HummingbirdTechGroup/persisted-objects.git"
         }
     ],
     "require": {
-        "php": "~5.5 || ~7.0",
+        "php": ">5.5",
         "doctrine/common": "~2.2",
         "symfony/framework-bundle": "~2.3 || ~3.0",
-        "everzet/persisted-objects": "~1.0",
+        "everzet/persisted-objects": "dev-hb-fork",
         "carlosv2/dumbsmart-repositories": "dev-master#a10f51d4bc1067cafab89f6e7ad1f08b8bc8d670"
     },
     "require-dev": {
